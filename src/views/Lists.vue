@@ -1,27 +1,36 @@
 <script setup>
+import Axios from "axios";
+import { environment } from "../environments/environments.js";
 import Tweet from "../components/Tweet.vue";
-import { getListTweets } from "../api/tweetService.js";
+import { organizeTweetDataOfSelectedUsers } from "../feature/feature.js";
 
-import { computed, ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 
-// let some = ref([]);
-// const nose = () => {
-//     some.value = getListTweets(store.state.users);
-// }
-// const algo = setTimeout(nose, 1000);
+let tweets = ref([]);
 
-const tweets = computed(() => {
-    return getListTweets(store.state.users);
-});
+watchEffect(() => {
+    tweets.value = [];
+    for (const tw of store.state.users.users) {
+        Axios.get(`${environment.backend}/api/tweet?myList=${tw}`)
+            .then((tweet) => {
+                tweets.value.push(tweet.data);
+            })
+            .catch((e) => console.log(e));
+    }
+})
 
 </script>
 
 <template>
     <div class="tweets">
-        <div class="tweets-content" v-for="tw in tweets.flat()" :key="tw.id">
+        <div
+            class="tweets-content"
+            v-for="tw in organizeTweetDataOfSelectedUsers(tweets)"
+            :key="tw.id"
+        >
             <div
                 class="referenced_tweets"
                 v-for="referenced_tweets in tw.referenced_tweets"

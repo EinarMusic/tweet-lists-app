@@ -10,7 +10,9 @@ import Retweeted from "./Retweeted.vue"
 import RepliedTo from "./RepliedTo.vue"
 import PublicMetric from './PublicMetrict.vue';
 
-const props = defineProps(["tw", "referenced_tweets"])
+const props = defineProps(["tw", "referenced_tweets"]);
+
+
 </script>
 
 <template>

@@ -1,15 +1,27 @@
+<script setup>
+import Menu from "../components/Icon/Menu.vue"
+
+import { useStore } from 'vuex';
+import { useRoute } from "vue-router";
+
+const store = useStore();
+const route = useRoute();
+</script>
+
 <template>
-    <div class="desc">
+    <div class="desc" v-if="store.state.describeList != undefined && route.path == '/lists'">
         <div class="info-list">
             <div class="title-list">
-                <span class="list-name">News</span>
+                <span class="list-name">{{ store.state.describeList.name }}</span>
                 <span class="count-users">
-                    <strong style="font-size: 15px;margin-right:5px">10</strong>
+                    <strong
+                        style="font-size: 15px;margin-right:5px"
+                    >{{ store.state.describeList.users.length }}</strong>
                     <span style="color: rgb(83, 100, 113);">Miembros</span>
                 </span>
             </div>
             <div class="desc-list">
-                <span>news importantes.</span>
+                <span>{{ store.state.describeList.description }}</span>
             </div>
         </div>
         <div class="images">
@@ -22,10 +34,11 @@
                 </div>
             </div>
         </div>
+        <div class="menu">
+            <Menu />
+        </div>
     </div>
 </template>
-
-<script setup></script>
 
 <style scoped>
 .desc {
@@ -60,6 +73,8 @@
 .images {
     display: flex;
     margin: 23px 0 0 15px;
+
+    flex: 1;
 }
 
 .image-users-list {
@@ -86,5 +101,22 @@
     width: 30px;
 
     border-radius: 50%;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 5px;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.menu:hover {
+    background-color: #1d9cf049;
 }
 </style>

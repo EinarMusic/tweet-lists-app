@@ -1,15 +1,17 @@
 import { createStore } from "vuex";
 
-import { getListTweets } from "../api/tweetService.js";
-
 export default createStore({
   strict: true,
   state: {
-    users: null
+    users: null,
+    describeList: null,
   },
   mutations: {
     getUsers(state, users) {
       state.users = users;
-    }
-  }
+    },
+    getDescriptionList(state, desc) {
+      state.describeList = desc;
+    },
+  },
 });

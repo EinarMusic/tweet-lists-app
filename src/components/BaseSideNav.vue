@@ -19,6 +19,9 @@ const allLists = computed(() => {
 
 const getTweets = (users) => {
     store.commit("getUsers", users);
+
+    store.commit("getDescriptionList", users);
+
     router.push("/lists");
 }
 
@@ -54,7 +57,7 @@ function openSave() {
                     >
                         <!-- style="color: #1d9bf0" -->
                         <li class="nav-items-second-level">
-                            <span @click="getTweets(list.users)">{{ list.name }}</span>
+                            <span @click="getTweets(list)">{{ list.name }}</span>
                         </li>
                     </ul>
                 </li>
