@@ -12,6 +12,9 @@ const props = defineProps({
     retweetedBool: {
         type: Boolean,
         default: false
+    },
+    retweetdBy: {
+        type: Object
     }
 })
 
@@ -20,7 +23,7 @@ const props = defineProps({
 <template>
     <span class="info">
         <div class="retweet-by-user" v-if="props.retweetedBool">
-            <span>jack lo retwitteó</span>
+            <span>{{props.retweetdBy.name}} lo retwitteó</span>
         </div>
         <div class="name-user">
             <span class="name">{{ props.users.name }}</span>

@@ -1,6 +1,10 @@
+<script setup>
+
+</script>
+
 <template>
     <div class="add-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="#19cf86" aria-hidden="true">
+        <svg fill="#19cf86" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
             <g>
                 <path
                     d="M13.414 12l5.793-5.793c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0L12 10.586 6.207 4.793c-.39-.39-1.023-.39-1.414 0s-.39 1.023 0 1.414L10.586 12l-5.793 5.793c-.39.39-.39 1.023 0 1.414.195.195.45.293.707.293s.512-.098.707-.293L12 13.414l5.793 5.793c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L13.414 12z"
@@ -13,21 +17,5 @@
 <style scoped>
 svg {
     transform: rotate(45deg);
-}
-
-.add-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    width: 30px;
-    height: 30px;
-}
-
-.add-icon:hover {
-    background-color: #19cf8631;
-    opacity: 5;
 }
 </style>

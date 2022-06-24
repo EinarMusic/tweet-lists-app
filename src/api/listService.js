@@ -1,34 +1,83 @@
-import db from "../environments/firebase.js";
+import db from "../environments/firebaseConfig";
+import {
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  deleteDoc,
+} from "firebase/firestore";
 
-function createNewList(formData) {
-  db.collection("lists").add({
-    name: formData.name,
-    description: formData.description,
-    users: formData.users
+async function setList(lists, user) {
+  const docRef = doc(collection(db, user));
+  //
+  await setDoc(docRef, {
+    id: docRef.id,
+    descList: [{ name: lists.name, description: lists.description }],
+    twOf: lists.users,
   });
 }
 
-function getLists() {
+async function getList(user) {
   const lists = [];
-  db.collection("lists")
-    .get()
-    .then(querySnapshot => {
-      lists.push(querySnapshot.docs.map(doc => doc.data()));
-    });
+
+  const querySnapshot = await getDocs(collection(db, user));
+  querySnapshot.forEach((doc) => {
+    lists.push(doc.data());
+  });
 
   return lists;
 }
+//
+async function getASpecificList(list) {
+  const docRef = doc(db, "lists", list.name);
+  const docSnap = await getDoc(docRef);
 
-function addUserOnList(listId) {
-  //
+  return docSnap.data();
 }
 
-function updateList(listId, data) {
-  //
+async function editList(user, listId, old, edit) {
+  const docRef = doc(db, user, listId);
+
+  await updateDoc(docRef, {
+    descList: arrayRemove(old),
+  });
+  await updateDoc(docRef, {
+    descList: arrayUnion(edit),
+  });
 }
 
-function deleteList(listId) {
-  //
+async function addUsers(user, tw, listId) {
+  const docRef = doc(db, user, listId);
+
+  await updateDoc(docRef, {
+    twOf: arrayUnion(tw),
+  });
 }
 
-export { createNewList, getLists, addUserOnList, updateList, deleteList };
+async function removeUser(user, usersDescription, listId) {
+  const docRef = doc(db, user, listId);
+
+  await updateDoc(docRef, {
+    twOf: arrayRemove(usersDescription.username),
+    userListDesc: arrayRemove(usersDescription),
+  });
+}
+
+async function removeList(user, listId) {
+  await deleteDoc(doc(db, user, listId));
+}
+
+export {
+  setList,
+  addUsers,
+  getList,
+  getASpecificList,
+  editList,
+  // addNewUserDescription,
+  removeUser,
+  removeList,
+};

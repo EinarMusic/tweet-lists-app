@@ -1,17 +1,31 @@
 <script setup>
-import TweetUserDesc from "./TweetUserDesc.vue"
-import BaseUrl from "./BaseUrl.vue"
-import BaseQuoted from "./Quoted.vue"
-import BaseImage from "./BaseImage.vue"
-import BaseVideo from "./BaseVideo.vue"
+import TweetUserDesc from "./TweetUserDesc.vue";
+import BaseUrl from "./BaseUrl.vue";
+import BaseQuoted from "./Quoted.vue";
+import BaseImage from "./BaseImage.vue";
+import BaseVideo from "./BaseVideo.vue";
 //
-import TweetProfileImage from "./TweetProfileImage.vue"
-import Retweeted from "./Retweeted.vue"
-import RepliedTo from "./RepliedTo.vue"
+import TweetProfileImage from "./TweetProfileImage.vue";
+import Retweeted from "./Retweeted.vue";
+import RepliedTo from "./RepliedTo.vue";
 import PublicMetric from './PublicMetrict.vue';
+//
+import AddSave from "./AddSave.vue";
+
+import { ref, provide } from "vue";
 
 const props = defineProps(["tw", "referenced_tweets"]);
 
+const dropAdd = ref(false);
+
+const tweet = ref([])
+
+const tweetForSave = () => tweet.value = props.tw; 
+
+provide("save-tweet", {
+    tweet,
+    tweetForSave
+})
 
 </script>
 
@@ -19,7 +33,7 @@ const props = defineProps(["tw", "referenced_tweets"]);
     <div class="lists">
         <div class="tweet-type" v-if="props.referenced_tweets.type == 'retweeted'">
             <div class="retweeted">
-                <Retweeted :retweetedID="props.referenced_tweets.id" />
+                <Retweeted :retweetedID="props.referenced_tweets.id" :tw="tw" /> 
             </div>
         </div>
         <div class="tweet-type" v-else-if="props.referenced_tweets.type != 'retweeted'">
@@ -80,7 +94,13 @@ const props = defineProps(["tw", "referenced_tweets"]);
                     </div>
                     <!-- BaseUrl funciona -->
                     <div class="metrict">
-                        <PublicMetric :public_metrics="props.tw.public_metrics" />
+                        <PublicMetric
+                            :public_metrics="props.tw.public_metrics"
+                            v-on:dropAdd="dropAdd = !dropAdd"
+                        />
+                        <div class="save-dropdown">
+                            <AddSave v-if="dropAdd" v-on:dropAdd="dropAdd = !dropAdd" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,5 +148,10 @@ const props = defineProps(["tw", "referenced_tweets"]);
 
 .metrict {
     width: 500px;
+}
+
+.save-dropdown {
+    position: absolute;
+    right: 0;
 }
 </style>

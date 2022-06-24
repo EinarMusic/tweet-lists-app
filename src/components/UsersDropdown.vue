@@ -1,54 +1,50 @@
+<script setup>
+import Verified from "../components/Icon/Verified.vue";
+import Delete from "../components/Icon/Delete.vue";
+
+const emit = defineEmits(["takeToRemove"]);
+const props = defineProps(["usersDesc"]);
+</script> 
+
 <template>
     <div class="dropdown">
-        <div class="user-search" v-for="a in [0, 0, 0]" :key="a.id">
+        <div class="user-search" v-for="users in props.usersDesc" :key="users.id">
             <div class="img-users">
-                <img
-                    src="https://pbs.twimg.com/profile_images/697361498587451394/_rX0-O0W_normal.png"
-                    alt
-                />
+                <img :src="users.profile_image_url" alt />
             </div>
             <div class="desc-users">
                 <span class="name">
-                    Elon Musk
-                    <span class="verified">
+                    {{ users.name }}
+                    <span class="verified" v-if="users.verified">
                         <Verified width="18" height="18" />
                     </span>
                 </span>
-                <span class="username">@elonmusk</span>
+                <span class="username">@{{ users.username }}</span>
             </div>
             <div class="add-icon">
-                <Add />
+                <div class="delete-icon" @click="emit('takeToRemove', users)">
+                    <Delete />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
-<script setup>
-import Verified from "../components/Icon/Verified.vue";
-import Add from "../components/Icon/Add.vue"
-</script>
 
 <style scoped>
 .dropdown {
-    width: 320px;
+    width: 100%;
 
-    padding: 5px 0;
+    padding: 0;
 
     background: white;
-    border-radius: 16px;
-
-    box-shadow: rgb(101 119 134 / 20%) 0px 0px 15px,
-        rgb(101 119 134 / 15%) 0px 0px 3px 1px;
 }
+
 .user-search {
     display: flex;
     align-items: center;
 
     padding: 10px 15px;
-}
-
-.user-search:hover {
-    background: rgb(247, 249, 249);
 }
 
 .img-users {
@@ -80,5 +76,21 @@ import Add from "../components/Icon/Add.vue"
 
 .desc-users .verified {
     margin-top: 10px;
+}
+
+.delete-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+.delete-icon:hover {
+    background: rgba(255, 0, 0, 0.055);
 }
 </style>

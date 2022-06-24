@@ -3,7 +3,6 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import BaseNavBar from './components/BaseNavBar.vue';
 import BaseSideNav from './components/BaseSideNav.vue';
-import DescribeList from './components/DescribeList.vue';
 
 </script>
 
@@ -15,12 +14,7 @@ import DescribeList from './components/DescribeList.vue';
     <div class="content">
       <BaseSideNav />
       <div class="main">
-        <div class="side-section">
-          <DescribeList />
-        </div>
-        <div class="main-section">
-          <router-view></router-view>
-        </div>
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -45,19 +39,27 @@ import DescribeList from './components/DescribeList.vue';
 }
 
 .content {
-  display: flex;
+  display: inline-flex;
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
 
-  width: 100%;
-  margin: 0 0 0 70px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  height: 86vh;
+  margin-left: 50px;
 }
 
-.main-section {
-  overflow: scroll;
-  height: 79vh;
+/* Hide scrollbar for Chrome, Safari and Opera */
+.main::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.main {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 </style>

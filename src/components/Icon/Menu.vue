@@ -14,3 +14,19 @@
         </svg>
     </div>
 </template>
+
+<style scoped>
+div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+div:hover {
+    background-color: #1d9cf049;
+}
+</style>

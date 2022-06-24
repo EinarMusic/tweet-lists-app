@@ -1,23 +1,16 @@
 <script setup>
-import { ref } from "vue";
-import Axios from "axios";
-import { environment } from "../environments/environments.js";
-import { forSpecificTweet } from "../feature/feature.js";
-
-const bigImg = ref(true);
-const urls = ref([]);
+import { ref, computed } from "vue";
+import { fetchById } from "../utility/tweetById.js";
 
 const props = defineProps(["urlsID"]);
 
-Axios.get(`${environment.backend}/api/quoted?ids=${props.urlsID}`)
-    .then((doc) => {
-        urls.value = forSpecificTweet(doc.data);
-    })
-    .catch((e) => console.log(e))
+const bigImg = ref(true);
 
+const { referenced } = fetchById(computed(() => props.urlsID));
 </script>
 
 <template>
+<div v-for="urls in referenced" :key="urls">
     <div v-if="urls.urls != undefined">
         <div v-if="urls.urls.images != '' && urls.urls.description != undefined">
             <div :class="bigImg == true ? 'wrap-url-img-big' : 'wrap-url'">
@@ -36,6 +29,7 @@ Axios.get(`${environment.backend}/api/quoted?ids=${props.urlsID}`)
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <style scoped>

@@ -1,4 +1,4 @@
-        <script setup>
+<script setup>
 // si son mas de una imagen?.
 
 // si es un quotes solo tendra border-radius debajo.

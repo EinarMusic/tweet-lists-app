@@ -1,37 +1,38 @@
 <script setup>
 import Caret from "./Icon/Caret.vue"
 
-import { ref, computed } from "vue"
+import { ref } from "vue"
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import firebase from "firebase/compat/app";
 
-import { getLists } from "../api/listService.js";
-
-const isOpen = ref(false);
+const listOpen = ref(true);
 const saveOpen = ref(false);
 
 const store = useStore();
 const router = useRouter();
 
-const allLists = computed(() => {
-    return getLists();
-});
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        store.dispatch("list/getListsForNav", user.email);
+        store.commit("auth/userInfo", user)
+        //store.dispatch("save/getSaveForNav");
+    }
+})
 
-const getTweets = (users) => {
-    store.commit("getUsers", users);
-
-    store.commit("getDescriptionList", users);
+const getTweets = (tw) => {
+    store.commit("list/clearToShowNewTweetList");
+    store.commit("list/setUsers", tw); 
 
     router.push("/lists");
 }
 
-function openItems() {
-    isOpen.value == true ? isOpen.value = false : isOpen.value = true;
+const getSaveList = () => {
+    store.dispatch("save/getSpecificSave", store.state.auth.user.email);
+
+    router.push("/save");
 }
 
-function openSave() {
-    saveOpen.value == true ? saveOpen.value = false : saveOpen.value = true;
-}
 </script>
 
 <template>
@@ -39,12 +40,12 @@ function openSave() {
         <div class="list">
             <ul class="nav-list">
                 <li class="nav-items-top-level">
-                    <span class="wrap-btn-top-level" @click="openItems()">
+                    <span class="wrap-btn-top-level" @click="listOpen = !listOpen">
                         <span class="nav-items-title">List</span>
                         <button>
                             <span
                                 class="nav-items-list"
-                                :style="{ transform: isOpen == true ? 'rotate(180deg)' : 'rotate(0)' }"
+                                :style="{ transform: listOpen == true ? 'rotate(180deg)' : 'rotate(0)' }"
                             >
                                 <Caret />
                             </span>
@@ -52,20 +53,18 @@ function openSave() {
                     </span>
                     <ul
                         class="nav-list-second-level"
-                        :style="{ display: isOpen == true && allLists.flat().length != 0 ? 'block' : 'none' }"
-                        v-for="list in allLists.flat()"
+                        :style="{ display: listOpen == true ? 'block' : 'none' }"
+                        v-for="list in store.state.list.listsForNav"
                     >
                         <!-- style="color: #1d9bf0" -->
-                        <li class="nav-items-second-level">
-                            <span @click="getTweets(list)">{{ list.name }}</span>
+                        <li class="nav-items-first-level" v-for="desc in list.descList">
+                            <span @click="getTweets(list)">{{ desc.name }}</span>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-items-top-level">
-                    <span class="wrap-btn-top-level" @click="openSave()">
-                        <span class="nav-items-title">
-                            <span>Save</span>
-                        </span>
+                    <span class="wrap-btn-top-level" @click="saveOpen = !saveOpen">
+                        <span class="nav-items-title">Save</span>
                         <button>
                             <span
                                 class="nav-items-save"
@@ -78,15 +77,10 @@ function openSave() {
                     <ul
                         class="nav-list-second-level"
                         :style="{ display: saveOpen == true ? 'block' : 'none' }"
+                        v-for="save in store.state.save.savelistForNavSide"
                     >
                         <li class="nav-items-second-level">
-                            <a href>Sport</a>
-                        </li>
-                        <li class="nav-items-second-level">
-                            <a href>News</a>
-                        </li>
-                        <li class="nav-items-second-level">
-                            <a href>Politic</a>
+                            <span @click="getSaveList">{{ save.name }}</span>
                         </li>
                     </ul>
                 </li>
@@ -99,7 +93,7 @@ function openSave() {
 .side-nav {
     background: #182430;
 
-    width: 260px;
+    width: 270px;
     height: 100vh;
 
     padding: 10px 25px 0 35px;
@@ -149,10 +143,20 @@ button {
     background-color: transparent;
 }
 
-.nav-items-list {
-    display: inline-block;
-}
+.nav-items-list,
 .nav-items-save {
     display: inline-block;
+
+    font-weight: 550;
+}
+
+.nav-items-first-level,
+.nav-items-second-level {
+    color: white;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    width: 170px;
+    overflow: hidden;
 }
 </style>

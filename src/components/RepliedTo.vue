@@ -6,25 +6,16 @@ import BaseImage from "./BaseImage.vue"
 import BaseVideo from "./BaseVideo.vue"
 import PublicMetric from './PublicMetrict.vue';
 
-import { ref } from "vue";
-import Axios from "axios";
-import { environment } from "../environments/environments.js";
-import { forSpecificTweet } from "../feature/feature.js"
+import { ref, computed } from "vue";
+import { fetchById } from "../utility/tweetById.js";
 
 const props = defineProps(["repliedID"]);
-const replied = ref([]);
 
-
-Axios.get(`${environment.backend}/api/quoted?ids=${props.repliedID}`)
-    .then((doc) => {
-        replied.value = forSpecificTweet(doc.data);
-    })
-    .catch((e) => console.log(e))
-
+const { referenced } = fetchById(computed(() => props.repliedID));
 </script>
 
 <template>
-    <div class="replied">
+    <div class="replied" v-for="replied in referenced" :key="replied.id">
         <div class="replied-left-side" v-if="replied.users != undefined">
             <div>
                 <TweetProfileImage :users="replied.users" :replied="true" />
@@ -38,7 +29,7 @@ Axios.get(`${environment.backend}/api/quoted?ids=${props.repliedID}`)
                 <TweetUserDesc :users="replied.users" />
             </div>
             <div class="content" v-if="replied.data != undefined">
-                <p>{{ replied.data.text }}</p>
+               <p>{{ replied.data.text }}</p>
             </div>
             <div class="url-content" v-if="replied.data != undefined">
                 <BaseUrl :urlsID="replied.data.tweet_id" />
@@ -75,7 +66,7 @@ Axios.get(`${environment.backend}/api/quoted?ids=${props.repliedID}`)
                 </div>
             </div>
             <div class="metrict" v-if="replied.data != undefined">
-                <PublicMetric :public_metrics="replied.data.public_metrics" />
+                <PublicMetric :public_metrics="replied.data.public_metrics" :saveIcon="false" />
             </div>
         </div>
     </div>
@@ -121,6 +112,10 @@ Axios.get(`${environment.backend}/api/quoted?ids=${props.repliedID}`)
 
 .url-content {
     margin-top: 10px;
+}
+
+.media {
+    z-index: -1;
 }
 
 .metrict {

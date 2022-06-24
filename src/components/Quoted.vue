@@ -4,23 +4,17 @@ import BaseImage from './BaseImage.vue';
 import BaseVideo from "./BaseVideo.vue"
 import BaseUrl from "./BaseUrl.vue"
 
-import { ref } from "vue";
-import Axios from "axios";
-import { environment } from "../environments/environments.js";
-import { forSpecificTweet } from "../feature/feature.js"
+import { ref, computed } from "vue";
+import { fetchById } from "../utility/tweetById.js";
 
-const quoted = ref([]);
 const props = defineProps(["quotedID"])
 
-Axios.get(`${environment.backend}/api/quoted?ids=${props.quotedID}`)
-    .then((doc) => {
-        quoted.value = forSpecificTweet(doc.data);
-    })
-    .catch((e) => console.log(e))
+const { referenced } = fetchById(computed(() => props.quotedID));
 </script>
 
 <template>
-    <div class="quotes" v-if="quoted != undefined">
+<div v-for="quoted in referenced" :key="quoted.id">
+    <div class="quotes" v-if="quoted != undefined" >
         <div class="user-desc" v-if="quoted.users != undefined">
             <div class="user-img">
                 <img :src="quoted.users.profile_image_url" alt />
@@ -53,6 +47,7 @@ Axios.get(`${environment.backend}/api/quoted?ids=${props.quotedID}`)
             </div>
         </div>
     </div>
+</div>
 </template>
 
 

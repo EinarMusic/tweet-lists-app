@@ -1,18 +1,15 @@
 
 <script setup>
-import Logo from "./Icon/Logo.vue"
+import Logo from "./Icon/Logo.vue";
 import TransitionInput from "./TransitionInput.vue";
 import Create from "./Icon/Create.vue";
-import SearchDropdown from "../views/SearchDropdown.vue";
-import CreateList from "../views/CreateList.vue";
+import CreateList from "./CreateList.vue";
+import AccountSetting from "./AccountSetting.vue";
 
 import { ref } from "vue";
 
-const clickCreateDropdown = ref(false);
-
-function clickCreate() {
-    clickCreateDropdown.value == true ? clickCreateDropdown.value = false : clickCreateDropdown.value = true
-}
+const dropCreate = ref(false);
+const dropSetting = ref(false);
 
 </script>
 
@@ -37,25 +34,26 @@ function clickCreate() {
         <div class="profile-setting">
             <div class="search">
                 <TransitionInput />
-                <div class="search-dropdown" style="display: none;">
-                    <SearchDropdown />
+            </div>
+            <div class="create">
+                <div class="create-list" @click="dropCreate = !dropCreate">
+                    <Create />
+                </div>
+                <div class="create-dropdown" v-if="dropCreate">
+                    <CreateList v-on:dropCreate="dropCreate = !dropCreate" />
                 </div>
             </div>
-            <div class="create-list" @click="clickCreate()">
-                <Create />
+            <div class="setting">
+                <div class="btn-profile-setting" @click="dropSetting = !dropSetting">
+                    <img
+                        src="https://pbs.twimg.com/profile_images/1372385481653108737/sfSFcAL__normal.jpg"
+                        alt
+                    />
+                </div>
+                <div class="account" v-if="dropSetting">
+                    <AccountSetting v-on:dropSetting="dropSetting = !dropSetting" />
+                </div>
             </div>
-            <div
-                class="create-dropdown"
-                :style="{ display: clickCreateDropdown ? 'block' : 'none' }"
-            >
-                <CreateList v-on:clickCreate="clickCreate()" />
-            </div>
-            <button class="btn-profile-setting">
-                <img
-                    src="https://pbs.twimg.com/profile_images/1372385481653108737/sfSFcAL__normal.jpg"
-                    alt
-                />
-            </button>
         </div>
     </div>
 </template>
@@ -123,11 +121,6 @@ function clickCreate() {
     cursor: pointer;
 }
 
-.search-dropdown {
-    position: absolute;
-    right: -10px;
-}
-
 .create-list {
     width: 50px;
     height: 50px;
@@ -148,28 +141,41 @@ function clickCreate() {
 
 .create-dropdown {
     position: absolute;
+    z-index: 3;
     right: 105px;
-    top: 75px;
+    top: 80px;
 }
 
 .btn-profile-setting {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
     margin-left: 15px;
 }
 
 .btn-profile-setting img {
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
+
+    object-fit: cover;
     border-radius: 100%;
     cursor: pointer;
+
+    border: 1px solid #ccd6dd;
 }
 
 .btn-profile-setting img:hover {
     border: 2px solid #ccd6dd;
 }
 
-button {
-    border: none;
-    background: white;
+.account {
+    position: absolute;
+    z-index: 3;
+    right: 50px;
+    top: 80px;
 }
 
 a {

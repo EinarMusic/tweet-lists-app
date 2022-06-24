@@ -1,41 +1,62 @@
 <script setup>
 import Menu from "../components/Icon/Menu.vue"
 
-import { useStore } from 'vuex';
+import { ref, computed} from "vue";
 import { useRoute } from "vue-router";
 
-const store = useStore();
 const route = useRoute();
+const props = defineProps(["descListAndSave", "usersDesc"]);
+
+const clickMenuDropdown = ref(false);
+
+const descList = computed(() => {
+    return props.descListAndSave.descList.map((data) => {
+        return {
+            name: data.name,
+            description: data.description,
+            countUser: props.descListAndSave.twOf.length
+        }
+    })
+})
+
+
 </script>
 
 <template>
-    <div class="desc" v-if="store.state.describeList != undefined && route.path == '/lists'">
-        <div class="info-list">
+    <div class="desc">
+        <div class="info-list" v-for="desc in descList">
             <div class="title-list">
-                <span class="list-name">{{ store.state.describeList.name }}</span>
-                <span class="count-users">
-                    <strong
-                        style="font-size: 15px;margin-right:5px"
-                    >{{ store.state.describeList.users.length }}</strong>
-                    <span style="color: rgb(83, 100, 113);">Miembros</span>
+                <span class="list-name" >{{ desc.name }} </span>
+                <!---->
+                <span v-if="route.path != '/save'">
+                    <!---->
+                    <span class="count-users">
+                        {{ desc.countUser }}
+                        <!---->
+                    </span>
+                    <!---->
+                    <span class="count-title">Miembros</span>
+                    <!---->
                 </span>
+                <!---->
             </div>
             <div class="desc-list">
-                <span>{{ store.state.describeList.description }}</span>
+                <span>{{ desc.description }}</span>
             </div>
         </div>
         <div class="images">
-            <div class="image-users-list" v-for="a in [1, 2, 3, 4, 5, 6, 7]" :key="a.id">
+            <!-- props.descListAndSave.userListDesc" -->
+            <div v-if="route.path != '/save'" class="image-users-list" v-for="imageUser in props.usersDesc">
                 <div class="wrap-img">
-                    <img
-                        src="https://pbs.twimg.com/profile_images/697361498587451394/_rX0-O0W_normal.png"
-                        alt
-                    />
+                    <img :src="imageUser.profile_image_url" alt />
                 </div>
             </div>
         </div>
-        <div class="menu">
+        <div class="menu" @click="clickMenuDropdown = !clickMenuDropdown">
             <Menu />
+        </div>
+        <div class="drop-menu" :style="{ display: clickMenuDropdown ? 'block' : 'none' }">
+            <slot />
         </div>
     </div>
 </template>
@@ -44,8 +65,7 @@ const route = useRoute();
 .desc {
     display: inline-flex;
     width: 600px;
-
-    margin-bottom: 10px;
+    background: white;
 }
 
 .title-list {
@@ -66,8 +86,20 @@ const route = useRoute();
     margin-right: 10px;
 }
 
-.title-list .count-users {
-    font-size: 12px;
+.count-users {
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.count-title {
+    color: rgb(83, 100, 113);
+}
+
+.desc-list {
+    width: 380px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .images {
@@ -104,19 +136,13 @@ const route = useRoute();
 }
 
 .menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     padding-top: 5px;
-
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
+    position: relative;
 }
 
-.menu:hover {
-    background-color: #1d9cf049;
+.drop-menu {
+    position: absolute;
+    top: 50px;
+    right: 1px;
 }
 </style>

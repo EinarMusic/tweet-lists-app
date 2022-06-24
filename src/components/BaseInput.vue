@@ -11,21 +11,32 @@ const props = defineProps({
         type: String,
         default: ""
     },
+    border: {
+        type: Boolean,
+        default: true
+    },
     error: {
         type: String,
         defulat: ""
     },
-    modelValue: String,
+    modelValue: {
+        type: String
+    }
 })
+
+defineEmits(["update:modelValue"]);
 </script>
 
 <template>
-    <div class="input">
+    <div class="base-input">
         <span class="label">{{ props.label }}</span>
-        <div class="wrap-input" :style="{ height: props.height }">
+        <div
+            class="wrap-input"
+            :style="{ height: props.height, border: props.border == true ? '1px solid rgb(207, 217, 222)' : 'none' }"
+        >
             <input
+                v-model="modelValue"
                 @input="$emit('update:modelValue', $event.target.value)"
-                v-bind="$attrs"
                 type="text"
                 :placeholder="props.placeholder"
             />
@@ -35,18 +46,14 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.input .label {
+.base-input .label {
     color: rgb(83, 100, 113);
     font-size: 15px;
     font-weight: 500;
 }
 .wrap-input {
-    border: 1px solid rgb(207, 217, 222);
     border-radius: 4px;
-}
-
-.input {
-    margin: 5px 0 10px 0;
+    position: relative;
 }
 
 input {
@@ -65,8 +72,9 @@ input {
 .error {
     color: red;
     font-size: 12px;
-    text-align: end;
 
-    margin-top: 2px;
+    position: absolute;
+    top: 26px;
+    right: 3px;
 }
 </style>

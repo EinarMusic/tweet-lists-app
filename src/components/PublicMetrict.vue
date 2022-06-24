@@ -1,10 +1,25 @@
 <script setup>
-import Comments from "./Icon/Comments.vue"
-import Retweet from "./Icon/Retweets.vue"
-import Like from "./Icon/Like.vue"
-import List from "./Icon/List.vue"
+import Comments from "./Icon/Comments.vue";
+import Retweet from "./Icon/Retweets.vue";
+import Like from "./Icon/Like.vue";
+import List from "./Icon/List.vue";
 
-const props = defineProps(["public_metrics"])
+import { useRoute } from "vue-router";
+
+const emit = defineEmits(["dropAdd"]);
+
+const props = defineProps({
+    public_metrics: {
+        type: Object
+    },
+    saveIcon: {
+        type: Boolean,
+        default: true
+    }
+})
+
+const route = useRoute();
+
 </script>
 
 <template>
@@ -23,8 +38,8 @@ const props = defineProps(["public_metrics"])
                 <span>{{ props.public_metrics.like_count }}</span>
             </div>
         </div>
-        <div class="created-list">
-            <List />
+        <div class="created-list" v-if="props.saveIcon">
+            <List v-if="route.path != '/save'" @click="emit('dropAdd')" />
         </div>
     </div>
 </template>
@@ -33,6 +48,11 @@ const props = defineProps(["public_metrics"])
 .metrict {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    height: 40px;
+
+    z-index: 3;
 }
 .public_metrics {
     display: flex;

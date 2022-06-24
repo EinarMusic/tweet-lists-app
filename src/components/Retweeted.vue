@@ -6,25 +6,16 @@ import BaseImage from "./BaseImage.vue"
 import BaseVideo from "./BaseVideo.vue"
 import PublicMetric from './PublicMetrict.vue';
 
-import { ref } from "vue";
-import Axios from "axios";
-import { environment } from "../environments/environments.js";
-import { forSpecificTweet } from "../feature/feature.js"
+import { ref, computed } from "vue";
+import { fetchById } from "../utility/tweetById.js";
 
-const props = defineProps(["retweetedID"]);
-const retweeted = ref([]);
+const props = defineProps(["retweetedID", "tw"]);
 
-
-Axios.get(`${environment.backend}/api/quoted?ids=${props.retweetedID}`)
-    .then((doc) => {
-        retweeted.value = forSpecificTweet(doc.data);
-    })
-    .catch((e) => console.log(e))
-
+const { referenced } = fetchById(computed(() => props.retweetedID));
 </script>
 
 <template>
-    <div class="retweeted">
+    <div class="retweeted" v-for="retweeted in referenced" :key="retweeted.id">
         <div class="retweeted-left-side" v-if="retweeted.users != undefined">
             <div>
                 <TweetProfileImage :users="retweeted.users" :retweetedBool="true" />
@@ -32,7 +23,7 @@ Axios.get(`${environment.backend}/api/quoted?ids=${props.retweetedID}`)
         </div>
         <div class="retweeted-tweet">
             <div v-if="retweeted.users != undefined">
-                <TweetUserDesc :users="retweeted.users" :retweetedBool="true" />
+                <TweetUserDesc :users="retweeted.users" :retweetedBool="true" :retweetdBy="props.tw.users" />
             </div>
             <div class="content" v-if="retweeted.data != undefined">
                 <p>{{ retweeted.data.text }}</p>
@@ -72,7 +63,7 @@ Axios.get(`${environment.backend}/api/quoted?ids=${props.retweetedID}`)
                 </div>
             </div>
             <div class="metrict" v-if="retweeted.data != undefined">
-                <PublicMetric :public_metrics="retweeted.data.public_metrics" />
+                <PublicMetric :public_metrics="retweeted.data.public_metrics" :saveIcon="false" />
             </div>
         </div>
     </div>
