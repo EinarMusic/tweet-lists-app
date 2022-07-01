@@ -99,6 +99,8 @@ const getSaveList = () => {
 
     width: 100%;
     height: 100vh;
+
+    overflow: hidden;
 }
 
 .header-menu {
@@ -180,7 +182,7 @@ button {
 
     width: 100%;
 
-    padding: 5px 18px;
+    padding: 5px 22px 5px 18px;
 
 
     position: fixed;
@@ -248,11 +250,6 @@ button {
     display: inline-flex;
     align-items: center;
 
-    /* border: 2px solid #ccd6dd;
-    border-radius: 50px;
-
-    padding: 0 4px; */
-
     cursor: pointer;
     position: relative;
 }
@@ -270,10 +267,11 @@ button {
     justify-content: center;
     align-items: center;
 
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
 
     border-radius: 100%;
+    border: 2px solid #ccd6dd;
     background: white;
 }
 
