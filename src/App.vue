@@ -3,20 +3,60 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import BaseNavBar from './components/BaseNavBar.vue';
 import BaseSideNav from './components/BaseSideNav.vue';
+//
+import NavBar from './components/RESPONSIVE/NavBar.vue';
+import SideNav from './components/RESPONSIVE/SideNav.vue';
 
+import { ref } from "vue";
+import { useStore } from "vuex";
+
+import { useMediaQuery } from '@vueuse/core';
+import firebase from "firebase/compat/app";
+
+const store = useStore();
+
+const isSmallScreen = useMediaQuery('(min-width: 540px)');
+
+const dropMenu = ref(false);
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        store.dispatch("list/getListsForNav", user.email);
+        store.commit("auth/userInfo", user)
+        //store.dispatch("save/getSaveForNav");
+    }
+})
 </script>
 
 <template>
   <div class="wrap-all-main">
-    <div class="nav">
-      <BaseNavBar />
-    </div>
-    <div class="content">
-      <BaseSideNav />
-      <div class="main">
-        <router-view></router-view>
+    <!--  -->
+    <div v-if="!isSmallScreen">
+      <NavBar v-on:dropMenu="dropMenu = !dropMenu" />
+      <div class="mobile-nav-side" v-if="dropMenu">
+        <SideNav v-on:dropMenu="dropMenu = !dropMenu"/>
+      </div>
+      <div>
+        <div class="mobi">
+          <router-view></router-view>
+        </div>
       </div>
     </div>
+    <!--  -->
+    <div v-else>
+      <div class="nav" >
+        <BaseNavBar />
+      </div>
+      <div class="content">
+        <div class="nav-side">
+          <BaseSideNav />
+        </div>
+        <div class="main">
+          <router-view></router-view>
+        </div>
+      </div>
+    </div>
+    <!--  -->
   </div>
 </template>
 
@@ -31,15 +71,33 @@ import BaseSideNav from './components/BaseSideNav.vue';
   padding: 0;
 }
 
+.nav-side {
+  width: 270px;
+}
+
+.mobile-nav-side {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+}
+
 .wrap-all-main {
   height: 100vh;
   overflow: hidden;
-
   position: relative;
 }
 
 .content {
   display: inline-flex;
+  overflow: hidden;
 }
 
 .main {
@@ -50,6 +108,17 @@ import BaseSideNav from './components/BaseSideNav.vue';
 
   height: 86vh;
   margin-left: 50px;
+
+  width: 600px;
+}
+
+.mobi {
+  display: inline-block;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  height: 90vh;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

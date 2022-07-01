@@ -46,7 +46,7 @@ const route = useRoute();
 
 <style scoped>
 .metrict {
-    display: flex;
+    display: inline-flex;
     justify-content: space-between;
     align-items: center;
 

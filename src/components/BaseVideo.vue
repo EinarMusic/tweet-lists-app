@@ -52,10 +52,12 @@ const props = defineProps({
 <style scoped>
 .video {
     margin-top: 16px;
+
 }
 
 .content-video {
     position: relative;
+
 }
 
 .content-video .img {

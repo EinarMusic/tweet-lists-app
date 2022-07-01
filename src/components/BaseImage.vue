@@ -27,9 +27,11 @@ const props = defineProps({
 
 <style scoped>
 .content-img img {
-    border: 1px solid rgb(207, 217, 222);
-
     width: 100%;
     height: 100%;
+
+    object-fit: cover;
+
+    border: 1px solid rgb(207, 217, 222);
 }
 </style>

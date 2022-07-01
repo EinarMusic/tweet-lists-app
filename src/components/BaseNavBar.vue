@@ -1,9 +1,9 @@
 
 <script setup>
 import Logo from "./Icon/Logo.vue";
-import TransitionInput from "./TransitionInput.vue";
 import Create from "./Icon/Create.vue";
 import CreateList from "./CreateList.vue";
+import MobileShowLists from "./Icon/MobileShowLists.vue";
 import AccountSetting from "./AccountSetting.vue";
 
 import { ref } from "vue";
@@ -26,18 +26,12 @@ const dropSetting = ref(false);
                 <a href>
                     <span>Github</span>
                 </a>
-                <a href>
-                    <span>About Us</span>
-                </a>
             </div>
         </div>
         <div class="profile-setting">
-            <div class="search">
-                <TransitionInput />
-            </div>
             <div class="create">
                 <div class="create-list" @click="dropCreate = !dropCreate">
-                    <Create />
+                    <Create /> 
                 </div>
                 <div class="create-dropdown" v-if="dropCreate">
                     <CreateList v-on:dropCreate="dropCreate = !dropCreate" />
@@ -114,11 +108,6 @@ const dropSetting = ref(false);
 .profile-setting {
     display: flex;
     align-items: center;
-}
-
-.search {
-    position: relative;
-    cursor: pointer;
 }
 
 .create-list {

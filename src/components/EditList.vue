@@ -74,7 +74,7 @@ const updateUsers =  () => {
     }
 }
 
-const userToRemove = ref({});
+let userToRemove = ref([]);
 const takeToRemove = (remove) => userToRemove.value = remove;
 
 const deleteUser = () => { 

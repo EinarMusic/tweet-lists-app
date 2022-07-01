@@ -8,10 +8,13 @@ import { userFetch } from "../utility/usersDesc.js";
 
 import { computed, watchEffect } from "vue";
 import { useStore } from "vuex";
+import { useMediaQuery } from '@vueuse/core';
 
 const store = useStore();
 
 const { usersDesc } = userFetch(computed(() => store.state.list.users.twOf));
+
+const isSmallScreen = useMediaQuery('(min-width: 540px)');
 
 watchEffect(() => {
     store.dispatch("list/getTweetFromTw", store.state.list.users.twOf); 
@@ -20,10 +23,10 @@ watchEffect(() => {
 </script>
 
 <template>
-    <div class="list">
+    <div class="list" :style="{width: !isSmallScreen ? '100vw' : '100%'}">
         <div class="description">
             <div class="wrap-desc">
-                <DescribeList :descListAndSave="store.state.list.users" :usersDesc="usersDesc">
+                <DescribeList :descListAndSave="store.state.list.users" :usersDesc="usersDesc" :mobile="!isSmallScreen"> 
                     <EditList /> 
                 </DescribeList>
             </div>
@@ -55,13 +58,25 @@ watchEffect(() => {
     display: inline-block;
 
     border-bottom: 1px solid rgb(207, 217, 222);
+
+    /* desktop */
+    /* width: 600px; */
+
+    /* mobile */
+    /* width: 100vw; */
+    
 }
 
-.description {
-    margin-bottom: 50px;
+.tweets {
+    margin-top: 68px;
 }
 
 .wrap-desc {
     position: fixed;
+    min-width: 600px;
+
+    /* width: 100%; */
+
+    z-index: 1;
 }
 </style>

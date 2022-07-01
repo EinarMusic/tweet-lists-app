@@ -32,33 +32,20 @@ const { referenced } = fetchById(computed(() => props.retweetedID));
                 <BaseUrl :urlsID="retweeted.data.tweet_id" />
             </div>
             <div class="media" v-if="retweeted.media != '' && retweeted.media != undefined">
-                <div class="video-content" v-if="retweeted.media.type == 'video'">
+                <div class="video-content" v-if="retweeted.media.type == 'video' || retweeted.media.type == 'animated_gif'">
                     <BaseVideo
                         :media="retweeted.media.preview_image_url"
                         borderRadius="16px"
-                        width="510px"
-                        height="360px"
                         top="140px"
                         left="215px"
-                    />
-                </div>
-                <div class="video-content" v-if="retweeted.media.type == 'animated_gif'">
-                    <BaseVideo
-                        :media="retweeted.media.preview_image_url"
-                        :gif="true"
-                        borderRadius="16px"
-                        width="510px"
+                        width="100%"
                         height="360px"
-                        top="140px"
-                        left="215px"
                     />
                 </div>
                 <div class="image-content" v-if="retweeted.media.type == 'photo'">
                     <BaseImage
                         :media="retweeted.media"
                         borderRadius="16px"
-                        width="510px"
-                        height="360px"
                     />
                 </div>
             </div>
@@ -73,24 +60,30 @@ const { referenced } = fetchById(computed(() => props.retweetedID));
 /* retweeted */
 
 .retweeted {
-    display: flex;
+    display: inline-flex;
 
-    padding: 12px 17px 3px 10px;
+    padding: 7px 14px 7px 7px;
+    width: 100%;
 }
 
 .retweeted:hover {
     background-color: rgba(0, 0, 0, 0.03);
 }
 .retweeted-tweet {
-    display: flex;
-    flex-direction: column;
+    display: inline;
+
+    width: 100%;
 
     margin-left: 10px;
 }
 
+.content {
+    width: 100%;
+}
+
 .content p {
     color: rgb(15, 20, 25);
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
 }
 
@@ -98,7 +91,4 @@ const { referenced } = fetchById(computed(() => props.retweetedID));
     margin-top: 10px;
 }
 
-.metrict {
-    width: 500px;
-}
 </style>

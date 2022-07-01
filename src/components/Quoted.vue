@@ -36,13 +36,10 @@ const { referenced } = fetchById(computed(() => props.quotedID));
             </div>
             <div class="media" v-if="quoted.media != undefined">
                 <div class="content-img" v-if="quoted.media.type == 'photo'">
-                    <BaseImage :media="quoted.media" width="510px" height="360px" />
+                    <BaseImage :media="quoted.media" />
                 </div>
-                <div class="content-video" v-if="quoted.media.type == 'video'">
+                <div class="content-video" v-if="quoted.media.type == 'video' || quoted.media.type == 'animated_gif'">
                     <BaseVideo :media="quoted.media.preview_image_url" />
-                </div>
-                <div class="content-video" v-if="quoted.media.type == 'animated_gif'">
-                    <BaseVideo :media="quoted.media.preview_image_url" :gif="true" />
                 </div>
             </div>
         </div>
@@ -53,7 +50,6 @@ const { referenced } = fetchById(computed(() => props.quotedID));
 
 <style scoped>
 .quotes {
-    width: 510px;
 
     margin: 12px 0 5px 0;
 

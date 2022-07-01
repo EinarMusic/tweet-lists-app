@@ -60,32 +60,16 @@ provide("save-tweet", {
                     <!-- BaseImage funciona -->
                     <div v-if="props.tw.attachments != undefined && props.tw.media != undefined">
                         <div class="image-content" v-if="props.tw.media.type == 'photo'">
-                            <BaseImage
+                           <BaseImage
                                 :media="props.tw.media"
                                 borderRadius="16px"
-                                width="510px"
-                                height="360px"
                             />
                         </div>
-                        <div class="video-content" v-else-if="props.tw.media.type == 'video'">
+                        <div class="video-content" v-else-if="props.tw.media.type == 'video' || props.tw.media.type == 'animated_gif'">
                             <BaseVideo
                                 :media="props.tw.media.preview_image_url"
                                 borderRadius="16px"
-                                width="510px"
-                                height="360px"
-                                top="140px"
-                                left="215px"
-                            />
-                        </div>
-                        <div
-                            class="video-content"
-                            v-else-if="props.tw.media.type == 'animated_gif'"
-                        >
-                            <BaseVideo
-                                :media="props.tw.media.preview_image_url"
-                                :gif="true"
-                                borderRadius="16px"
-                                width="510px"
+                                width="100%"
                                 height="360px"
                                 top="140px"
                                 left="215px"
@@ -112,18 +96,21 @@ provide("save-tweet", {
 .lists {
     display: inline-block;
 
-    width: 600px;
+    width: 100%;
 
     cursor: pointer;
 
     border-top: 1px solid rgb(207, 217, 222);
     border-left: 1px solid rgb(207, 217, 222);
     border-right: 1px solid rgb(207, 217, 222);
+
+    
 }
 
 .list-content {
     display: flex;
-    padding: 12px 17px 3px 10px;
+    padding: 7px 14px 7px 7px;
+
 }
 .list-content:hover {
     background-color: rgba(0, 0, 0, 0.03);
@@ -133,12 +120,14 @@ provide("save-tweet", {
     display: flex;
     flex-direction: column;
 
+    width: 100%;
+
     margin-left: 10px;
 }
 
 .content p {
     color: rgb(15, 20, 25);
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
 }
 
@@ -147,7 +136,7 @@ provide("save-tweet", {
 }
 
 .metrict {
-    width: 500px;
+    width: 100%;
 }
 
 .save-dropdown {

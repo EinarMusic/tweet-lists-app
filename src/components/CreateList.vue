@@ -96,6 +96,7 @@ const setNewList = () => {
         0px 2px 6px 2px rgb(60 64 67 / 15%);
 
     width: 320px;
+    /* width: 93vw; */
 }
 
 .header {

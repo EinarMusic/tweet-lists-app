@@ -1,7 +1,13 @@
+<script setup>
+const props = defineProps(["mobile"]);
+</script>
+
 <template>
     <div>
+        <!-- fill="#067acc" -->
         <svg
             width="20"
+            :style="{fill: props.mobile ? 'white' : 'black'}"
             viewBox="0 0 24 24"
             aria-hidden="true"
             class="r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1hdv0qi"

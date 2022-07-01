@@ -1,10 +1,10 @@
 <script setup>
 import Caret from "./Icon/Caret.vue"
+import Close from "./Icon/Close.vue"
 
 import { ref } from "vue"
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import firebase from "firebase/compat/app";
 
 const listOpen = ref(true);
 const saveOpen = ref(false);
@@ -12,13 +12,8 @@ const saveOpen = ref(false);
 const store = useStore();
 const router = useRouter();
 
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        store.dispatch("list/getListsForNav", user.email);
-        store.commit("auth/userInfo", user)
-        //store.dispatch("save/getSaveForNav");
-    }
-})
+const props = defineProps(["mobile"]);
+const emit = defineEmits(["mobileDropLists"]);
 
 const getTweets = (tw) => {
     store.commit("list/clearToShowNewTweetList");
@@ -38,6 +33,9 @@ const getSaveList = () => {
 <template>
     <div class="side-nav">
         <div class="list">
+            <div class="close-menu-mobile" v-if="props.mobile">
+                <Close @click="emit('mobileDropLists')" />
+            </div>
             <ul class="nav-list">
                 <li class="nav-items-top-level">
                     <span class="wrap-btn-top-level" @click="listOpen = !listOpen">
@@ -54,7 +52,7 @@ const getSaveList = () => {
                     <ul
                         class="nav-list-second-level"
                         :style="{ display: listOpen == true ? 'block' : 'none' }"
-                        v-for="list in store.state.list.listsForNav"
+                        v-for="list in store.state.list.listsForNav" 
                     >
                         <!-- style="color: #1d9bf0" -->
                         <li class="nav-items-first-level" v-for="desc in list.descList">
@@ -93,10 +91,11 @@ const getSaveList = () => {
 .side-nav {
     background: #182430;
 
-    width: 270px;
+    /* width: 270px; */
+    width: 100%;
     height: 100vh;
 
-    padding: 10px 25px 0 35px;
+    padding: 10px 0;
 }
 
 .wrap-btn-top-level {
@@ -104,7 +103,7 @@ const getSaveList = () => {
     justify-content: space-between;
     align-items: center;
 
-    margin: 20px 0;
+    padding: 0px 30px;
 }
 
 .nav-items-title {
@@ -115,6 +114,33 @@ const getSaveList = () => {
 
     display: flex;
     align-items: center;
+}
+
+.nav-items-list,
+.nav-items-save {
+    display: inline-block;
+    font-weight: 550;
+}
+
+.nav-items-first-level,
+.nav-items-second-level {
+    color: white;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    width: 170px;
+    overflow: hidden;
+
+    padding: 0 35px;
+}
+
+.close-menu-mobile {
+    display:flex;
+    align-items:center;
+    justify-content:end;
+
+    padding: 20px 25px;
+
 }
 
 span {
@@ -143,20 +169,5 @@ button {
     background-color: transparent;
 }
 
-.nav-items-list,
-.nav-items-save {
-    display: inline-block;
 
-    font-weight: 550;
-}
-
-.nav-items-first-level,
-.nav-items-second-level {
-    color: white;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-    width: 170px;
-    overflow: hidden;
-}
 </style>

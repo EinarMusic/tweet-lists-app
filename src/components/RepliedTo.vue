@@ -85,7 +85,7 @@ const { referenced } = fetchById(computed(() => props.repliedID));
     background-color: rgba(0, 0, 0, 0.03);
 }
 .replied-tweet {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
 
     margin-left: 10px;
@@ -118,7 +118,4 @@ const { referenced } = fetchById(computed(() => props.repliedID));
     z-index: -1;
 }
 
-.metrict {
-    width: 500px;
-}
 </style>
