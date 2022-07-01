@@ -2,7 +2,6 @@
 import Caret from "../Icon/Caret.vue";
 import Close from "../Icon/Close.vue";
 import Create from "../Icon/Create.vue";
-import Github from "../Icon/Github.vue";
 import AccountSetting from "../AccountSetting.vue";
 import CreateList from "../CreateList.vue";
 
@@ -73,23 +72,22 @@ const getSaveList = () => {
                     </ul>
                 </li>
             </ul>
-            <div class="setting">
-                <div class="btn-profile-setting" @click="dropSetting = !dropSetting">
-                    <img
-                        src="https://pbs.twimg.com/profile_images/1372385481653108737/sfSFcAL__normal.jpg"
-                        alt
-                    />
-                    <span class="btn-sign">Sign out</span>
+            <div class="footer">
+                <div class="setting">
+                    <div class="btn-profile-setting" @click="dropSetting = !dropSetting">
+                        <img
+                            src="https://pbs.twimg.com/profile_images/1372385481653108737/sfSFcAL__normal.jpg"
+                            alt
+                        />
+                        <span class="btn-create">Sign out</span>
+                    </div>
+                    <div class="account" v-if="dropSetting">
+                        <AccountSetting v-on:dropSetting="dropSetting = !dropSetting" />
+                    </div>
                 </div>
-                <div class="account" v-if="dropSetting">
-                    <AccountSetting v-on:dropSetting="dropSetting = !dropSetting" />
+                <div class="github-btn">
+                    <span class="btn-git">Github</span>
                 </div>
-            </div>
-            <div class="github-btn">
-                <div class="wrap-icon-create">
-                    <Github /> 
-                </div>
-                <span class="btn-create">Github</span>
             </div>
         </div>
     </div>
@@ -108,7 +106,7 @@ const getSaveList = () => {
     align-items:center;
     justify-content: space-between;
 
-    padding: 30px 22px 0 17px;
+    padding: 15px 22px 15px 17px;
 }
 
 .title-menu {
@@ -123,7 +121,7 @@ const getSaveList = () => {
     justify-content: space-between;
     align-items: center;
     
-    padding: 30px 25px 10px 17px;
+    padding: 20px 25px 10px 17px;
 }
 
 .nav-items-title {
@@ -148,7 +146,7 @@ const getSaveList = () => {
     width: 170px;
     overflow: hidden;
 
-    padding: 10px 0 10px 27px;
+    padding: 5px 27px;
 }
 
 li {
@@ -159,7 +157,7 @@ span {
     display: inline-block;
     text-decoration: none;
     line-height: 16px;
-    font-size: 17px;
+    font-size: 15px;
 
     word-break: break-word;
     letter-spacing: normal;
@@ -175,21 +173,44 @@ button {
 
 /* setting */
 
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 5px 18px;
+
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    /* left: 17px; */
+}
+
 .setting {
-    padding: 20px 22px 0 17px;
+    margin: 0 0 10px 0;
+}
+
+.github-btn {
+    cursor: pointer;
+}
+
+.btn-git {
+    color: #b6c4ce;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .btn-profile-setting {
     display: inline-flex;
-    justify-content: center;
     align-items: center;
 
     position: relative;
 
-    border: 2px solid #ccd6dd;
-    border-radius: 50px;
-
-    padding: 4px;
+    cursor: pointer;
 }
 
 .btn-profile-setting img {
@@ -197,19 +218,16 @@ button {
     height: 35px;
 
     object-fit: cover;
-    border-radius: 100%;
-    cursor: pointer;
-}
 
-.btn-profile-setting img:hover {
-    /* border: 2px solid #ccd6dd; */
+    border-radius: 100%;
+    border: 2px solid #ccd6dd;
 }
 
 .account {
     position: absolute;
     z-index: 3;
     /* right: 50px; */
-    top: 516px;
+    top: 0px;
 }
 
 .btn-sign {
@@ -218,42 +236,22 @@ button {
     font-weight: 500;
 
     padding: 10px;
-
 }
 
 /* create */
 
 .create {
-    padding: 30px 22px 0 17px;
-}
-
-.github-btn {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-
-    border: 2px solid #ccd6dd;
-    border-radius: 50px;
-
-    padding: 4px;
-
-    cursor: pointer;
-    /*  */
-
-    position: fixed;
-    bottom: 17px;
-    left: 17px;
+    padding: 0 22px 0 17px;
 }
 
 .create-list {
     display: inline-flex;
-    justify-content: center;
     align-items: center;
 
-    border: 2px solid #ccd6dd;
+    /* border: 2px solid #ccd6dd;
     border-radius: 50px;
 
-    padding: 4px;
+    padding: 0 4px; */
 
     cursor: pointer;
     position: relative;
@@ -267,14 +265,13 @@ button {
     padding: 10px;
 }
 
-.wrap-icon-create,
-.wrap-icon-github {
+.wrap-icon-create {
     display: inline-flex;
     justify-content: center;
     align-items: center;
 
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
 
     border-radius: 100%;
     background: white;
