@@ -13,6 +13,12 @@ const router = useRouter()
 const store = useStore();
 const emit = defineEmits(["dropSetting"]);
 
+const event = (event) => {
+    const modal = document.getElementById('close-modal');
+
+    if (event.target == modal) emit('dropSetting');
+}
+
 onMounted(() => {
     let ui = firebaseui.auth.AuthUI.getInstance();
 
@@ -59,8 +65,8 @@ const signOutButton = () => {
 </script> 
 
 <template>
-    <div>
-        <div class="setting">
+    <div class="wrap-setting" @click="event($event)">
+        <div class="setting" id="close-modal">
             <div class="user-login" v-if="SignIn == null">
                 <div class="title">
                     <span>Login</span>
@@ -94,14 +100,31 @@ const signOutButton = () => {
 </template>
 
 <style scoped>
-.setting {
-    width: 320px;
 
-    background: #fff;
+.wrap-setting {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+  
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    display: table;
+}
+
+.setting {
+    display: table-cell;
+    vertical-align: middle;
+
+    /* width: 320px; */
+
+    /* background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%),
-        0px 2px 6px 2px rgb(60 64 67 / 15%);
+        0px 2px 6px 2px rgb(60 64 67 / 15%); */
 }
 
 /* Login */
@@ -125,6 +148,16 @@ const signOutButton = () => {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    width: 320px;
+    margin: 0px auto;
+
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%),
+        0px 2px 6px 2px rgb(60 64 67 / 15%);
+
 }
 
 .user-desc-and-setting {

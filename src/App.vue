@@ -31,13 +31,13 @@ firebase.auth().onAuthStateChanged((user) => {
 <template>
   <div class="wrap-all-main">
     <!--  -->
-    <div v-if="!isSmallScreen">
+    <div v-if="!isSmallScreen" class="mobile">
       <NavBar v-on:dropMenu="dropMenu = !dropMenu" />
       <div class="mobile-nav-side" v-if="dropMenu">
         <SideNav v-on:dropMenu="dropMenu = !dropMenu"/>
       </div>
       <div>
-        <div class="mobi">
+        <div class="mobi-content">
           <router-view></router-view>
         </div>
       </div>
@@ -71,33 +71,49 @@ firebase.auth().onAuthStateChanged((user) => {
   padding: 0;
 }
 
-.nav-side {
-  width: 270px;
-}
-
-.mobile-nav-side {
-  position: fixed;
-  z-index: 999;
-  top: 0;
-  left: 0;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-
-  width: 100%;
-
-}
-
 .wrap-all-main {
   height: 100vh;
   overflow: hidden;
   position: relative;
+
+
 }
+
+.mobile {
+}
+
+.mobile-nav-side {
+  /* position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+
+  width: 100%; */
+
+  /* display: inline-flex;
+  align-items: center;
+  justify-content: space-between; */
+}
+
+.mobi-content {
+  display: inline-block;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  height: 100vh;
+  /* height: 90vh; */
+}
+
+/*  */
 
 .content {
   display: inline-flex;
   overflow: hidden;
+}
+
+.nav-side {
+  width: 270px;
 }
 
 .main {
@@ -110,15 +126,6 @@ firebase.auth().onAuthStateChanged((user) => {
   margin-left: 50px;
 
   width: 600px;
-}
-
-.mobi {
-  display: inline-block;
-
-  overflow-x: hidden;
-  overflow-y: scroll;
-
-  height: 90vh;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

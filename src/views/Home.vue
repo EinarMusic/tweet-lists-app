@@ -6,4 +6,8 @@
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+div {
+    padding: 20px;
+}
+</style>

@@ -11,13 +11,19 @@ import { ref, computed } from "vue";
 import { useStore } from 'vuex';
 
 const store = useStore();
-const emit = defineEmits(["clickMenu"]);
+const emit = defineEmits(["dropEdit"]);
 
 const { usersDesc, retry } = userFetch(computed(() => store.state.list.users.twOf));
 
 const dropEdit = ref(false);
 const dropAdd = ref(false);
 const dropUsers = ref(false);
+
+const event = (event) => {
+    const modal = document.getElementById('close-modal');
+
+    if (event.target == modal) emit('dropEdit');
+}
 
 const list = ref({
     name: "",
@@ -98,7 +104,8 @@ const deleteList = () => {
 </script>
 
 <template>
-    <div class="user-edit">
+<div class="wrap-edit" @click="event($event)">
+    <div class="user-edit" id="close-modal">
         <div class="users-menu drop">
             <div class="input-list">
                 <div class="edit-title" @click="dropEdit = !dropEdit">
@@ -140,10 +147,29 @@ const deleteList = () => {
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <style scoped>
+.wrap-edit {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+  
+    background-color: rgba(0, 0, 0, 0.5);
+    display: table;
+}
+
 .user-edit {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.users-menu {
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 8px;
@@ -151,6 +177,8 @@ const deleteList = () => {
         0px 2px 6px 2px rgb(60 64 67 / 15%);
 
     width: 320px;
+    margin: 0px auto;
+    
 }
 
 .edit-dropdown,

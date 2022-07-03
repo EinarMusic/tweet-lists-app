@@ -22,6 +22,12 @@ const dropUsers = ref(false);
 const usersInputInvalid = ref({});
 const emptyInputName = ref("");
 
+const event = (event) => {
+    const modal = document.getElementById('close-modal');
+
+    if (event.target == modal) emit('dropCreate');
+}
+
 const setNewList = () => {
     if (createList.value.name.length == 0) emptyInputName.value = "this field is not optional";
 
@@ -45,7 +51,8 @@ const setNewList = () => {
 </script> 
 
 <template>
-    <div class="wrap-all">
+    <div class="wrap-all" @click="event($event)">
+        <div class="wrap-create" id="close-modal">>
         <div class="create">
             <div class="header">
                 <span class="title">List</span>
@@ -84,11 +91,30 @@ const setNewList = () => {
                 </div>
             </div>
         </div>
+        </div>
     </div>
 </template>
 
 <style scoped>
+.wrap-all {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+  
+    display: table;
+}
+
+.wrap-create {
+    display: table-cell;
+    vertical-align: middle;
+}
+
 .create {
+
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 8px;
@@ -96,6 +122,7 @@ const setNewList = () => {
         0px 2px 6px 2px rgb(60 64 67 / 15%);
 
     width: 320px;
+    margin: 0px auto;
     /* width: 93vw; */
 }
 

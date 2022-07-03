@@ -36,6 +36,7 @@ const getSaveList = () => {
 </script>
 
 <template>
+<div class="wrap-nav">
     <div class="side-nav">
         <div class="list">
             <div class="header-menu">
@@ -82,7 +83,7 @@ const getSaveList = () => {
                         <span class="btn-create">Sign out</span>
                     </div>
                     <div class="account" v-if="dropSetting">
-                        <AccountSetting v-on:dropSetting="dropSetting = !dropSetting" />
+                        <AccountSetting v-on:dropSetting="dropSetting = !dropSetting"/>
                     </div>
                 </div>
                 <div class="github-btn">
@@ -91,18 +92,41 @@ const getSaveList = () => {
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <style scoped>
+.wrap-nav {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+  
+    display: table;
+}
+
 .side-nav {
-    background: #182430;
+    /* background: #182430;
 
     width: 100%;
     height: 100vh;
 
 
     position: relative;
-    overflow: hidden;
+    overflow: hidden; */
+
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.list {
+    background: #182430;
+
+    width: 100%;
+    height: 100%;
 }
 
 .header-menu {
@@ -184,7 +208,9 @@ button {
 
     width: 100%;
 
-    padding: 5px 22px 5px 18px;
+    padding: 0 22px 0 18px;
+
+    margin: 5px 0;
 
 
     position: fixed;
@@ -225,13 +251,6 @@ button {
 
     border-radius: 100%;
     border: 2px solid #ccd6dd;
-}
-
-.account {
-    position: absolute;
-    z-index: 3;
-    /* right: 50px; */
-    top: 0px;
 }
 
 .btn-sign {
@@ -276,13 +295,5 @@ button {
     border: 2px solid #ccd6dd;
     background: white;
 }
-
-.create-dropdown {
-    position: absolute;
-    z-index: 3;
-    /* right: 55px; */
-    top: 140px;
-}
-
 
 </style>

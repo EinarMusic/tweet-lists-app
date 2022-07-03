@@ -6,7 +6,7 @@ import EditList from "../components/EditList.vue";
 import { organizeTweetDataOfSelectedUsers } from "../feature/feature.js";
 import { userFetch } from "../utility/usersDesc.js"; 
 
-import { computed, watchEffect } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { useMediaQuery } from '@vueuse/core';
 
@@ -15,6 +15,8 @@ const store = useStore();
 const { usersDesc } = userFetch(computed(() => store.state.list.users.twOf));
 
 const isSmallScreen = useMediaQuery('(min-width: 540px)');
+
+const dropEdit = ref(false);
 
 watchEffect(() => {
     store.dispatch("list/getTweetFromTw", store.state.list.users.twOf); 
@@ -25,9 +27,11 @@ watchEffect(() => {
 <template>
     <div class="list" :style="{width: !isSmallScreen ? '100vw' : '100%'}">
         <div class="description">
-            <div class="wrap-desc">
-                <DescribeList :descListAndSave="store.state.list.users" :usersDesc="usersDesc" :mobile="!isSmallScreen"> 
-                    <EditList /> 
+            <div class="wrap-desc"> 
+                <DescribeList :descListAndSave="store.state.list.users" :usersDesc="usersDesc" :mobile="!isSmallScreen" @dropEdit="dropEdit = !dropEdit"> 
+                    <div v-if="dropEdit">
+                        <EditList @dropEdit="dropEdit = !dropEdit" /> 
+                    </div>
                 </DescribeList>
             </div>
         </div>

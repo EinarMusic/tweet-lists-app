@@ -28,10 +28,12 @@ const emit = defineEmits(["dropMenu"]);
     justify-content: space-between;
     align-items: center;
 
-    height: 95px;
+    height: 65px;
     padding: 0 24px;
 
     position: relative;
+
+    border-bottom: 1px solid rgb(207, 217, 222);
 }
 .logo-and-brand {
     display: flex;

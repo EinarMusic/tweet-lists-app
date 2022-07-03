@@ -6,6 +6,7 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const props = defineProps(["descListAndSave", "usersDesc", "mobile"]);
+const emit = defineEmits(["dropEdit"]);
 
 const clickMenuDropdown = ref(false);
 
@@ -55,13 +56,10 @@ const descList = computed(() => {
                 </div>
             </div>
         </div>
-        <div class="menu" @click="clickMenuDropdown = !clickMenuDropdown">
+        <div class="menu" @click="emit('dropEdit')">
             <Menu :mobile="props.mobile" />
         </div>
-        <div class="drop-menu" :style="{ 
-            display: clickMenuDropdown ? 'block' : 'none', 
-            right: props.mobile ? '220px' : '1px', 
-        }">
+        <div class="drop-menu" :style="{ right: props.mobile ? '220px' : '1px'}">
             <slot />
         </div>
     </div>
