@@ -10,11 +10,14 @@ import { ref, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 import { useMediaQuery } from '@vueuse/core';
 
+import api from "../data/testApi.js";
+const testApi = ref(api);
+
 const store = useStore();
 
 const { usersDesc } = userFetch(computed(() => store.state.list.users.twOf));
 
-const isSmallScreen = useMediaQuery('(min-width: 540px)');
+const isSmallScreen = useMediaQuery('(min-width: 700px)');
 
 const dropEdit = ref(false);
 
@@ -36,9 +39,10 @@ watchEffect(() => {
             </div>
         </div>
         <div class="tweets">
+            <!-- v-for="tw in organizeTweetDataOfSelectedUsers(store.state.list.tweets)" -->
             <div
                 class="tweets-content"
-                v-for="tw in organizeTweetDataOfSelectedUsers(store.state.list.tweets)"
+                v-for="tw in organizeTweetDataOfSelectedUsers([testApi])"
                 :key="tw.id"
             >
                 <div

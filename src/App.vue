@@ -15,7 +15,7 @@ import firebase from "firebase/compat/app";
 
 const store = useStore();
 
-const isSmallScreen = useMediaQuery('(min-width: 540px)');
+const isSmallScreen = useMediaQuery('(min-width: 700px)');
 
 const dropMenu = ref(false);
 
